@@ -67,4 +67,3 @@ public class WekinatorProxy {
       println("Error parsing OSC message");
       return -1;
    }
-}
