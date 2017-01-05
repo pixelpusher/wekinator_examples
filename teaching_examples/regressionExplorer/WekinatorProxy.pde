@@ -47,7 +47,7 @@ public class WekinatorProxy {
    }
    
    void stopRunning() {
-       OscMessage msg = new OscMessage("/wekinator/control/stopRecording");
+       OscMessage msg = new OscMessage("/wekinator/control/stopRunning");
        println("Stop running");
        oscP5.send(msg, dest);     
    }
