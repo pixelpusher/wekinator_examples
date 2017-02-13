@@ -15,7 +15,7 @@
  */
 
 #define ANALOG_INPUT_COUNT 6
-#define UPDATE_INTERVAL_MSEC 20
+#define UPDATE_INTERVAL_MSEC 40
 
 #ifdef BOARD_HAS_USB_SERIAL
 
@@ -53,7 +53,7 @@ void loop()
   
     // add all the analog inputs
     for (int i = 0; i < ANALOG_INPUT_COUNT; i++)
-        msg.add((float)analogRead(i));
+        msg.add(((float)analogRead(i))/1023.0f); // scale between 0 and 1
 
     // SLIPSerial.beginPacket();  
     msg.send(SLIPSerial);       // send the bytes to the SLIP stream
