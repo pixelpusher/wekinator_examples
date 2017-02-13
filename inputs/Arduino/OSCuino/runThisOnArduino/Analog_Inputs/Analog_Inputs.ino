@@ -1,10 +1,20 @@
+#include <OSCBoards copy.h>
+#include <OSCBoards.h>
+#include <OSCBundle.h>
+#include <OSCData.h>
+#include <OSCMatch.h>
+#include <OSCMessage.h>
+#include <OSCTiming.h>
+#include <SLIPEncodedSerial.h>
+#include <SLIPEncodedUSBSerial.h>
+
 #include <OSCMessage.h>
 
 /*
  * Make an OSC message and send it over serial
  */
 
-#define ANALOG_INPUT_COUNT 2
+#define ANALOG_INPUT_COUNT 6
 #define UPDATE_INTERVAL_MSEC 20
 
 #ifdef BOARD_HAS_USB_SERIAL
@@ -15,7 +25,7 @@ SLIPEncodedUSBSerial SLIPSerial( thisBoardsSerialUSB );
 #else
 
 #include <SLIPEncodedSerial.h>
-SLIPEncodedSerial SLIPSerial(Serial1);
+SLIPEncodedSerial SLIPSerial(Serial);
 
 #endif
 
