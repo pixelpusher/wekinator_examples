@@ -1,4 +1,4 @@
-import processing.serial.*; //<>// //<>// //<>//
+import processing.serial.*; //<>// //<>// //<>// //<>//
 //download at http://ubaa.net/shared/processing/udp/
 import hypermedia.net.*;
 //download at www.sojamo.de/libraries/controlp5
@@ -17,17 +17,35 @@ boolean applicationRunning = false;
 
 //start everything
 public void START(int theValue) {
-  setupUDP();
-  setupSerial();
-  hideControls();
-  applicationRunning = true;
+  boolean success = true;
+
+  try {
+    setupUDP();
+    setupSerial();
+  }
+  catch (Exception e)
+  {
+    // SERIAL ERROR!
+    System.err.println("SERIAL ERROR::" + e);
+    success = false;
+  }
+  if (success)
+  {
+    hideControls();
+    applicationRunning = true;
+  }
 }
 
-public void STOP() {
-  stopSerial();
-  stopUDP();
+public void STOP() 
+{
+  if (applicationRunning)
+  {
+    stopSerial();
+    stopUDP();
+
+    applicationRunning = false;
+  }
   showControls();
-  applicationRunning = false;
 }
 
 

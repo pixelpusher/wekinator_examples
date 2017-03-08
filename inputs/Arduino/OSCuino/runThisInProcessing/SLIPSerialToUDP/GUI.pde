@@ -47,12 +47,14 @@ void setupGUI() {
   serialddl.getCaptionLabel().getStyle().marginLeft = 3;
   serialddl.getValueLabel().getStyle().marginTop = 3;
   //set the serial options
-  String SerialList[] = Serial.list(); 
-  for (int i=0; i<SerialList.length; i++) {
-    String portName = SerialList[i];
+  //String SerialList[] = Serial.list();
+  serialList = Serial.list();
+  for (int i=0; i<serialList.length; i++) {
+    String portName = serialList[i];
     serialddl.addItem(portName, i);
   }
-  serialddl.setValue(2);
+  if (serialList.length > 0)
+    serialddl.setValue(0);
 
   //setup the baud list
   // baudddl = cp5.addDropdownList("BaudRate")

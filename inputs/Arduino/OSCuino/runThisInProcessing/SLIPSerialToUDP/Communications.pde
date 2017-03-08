@@ -17,6 +17,9 @@ final String[] serialRateStrings = {
   "300", "1200", "2400", "4800", "9600", "14400", 
   "19200", "28800", "38400", "57600", "115200"
 };
+
+String serialList[] = null;
+
 int baud=0;
 int serialListNumber = 2;
 
@@ -28,8 +31,11 @@ void setupSerial() {
     // choose highest rate if none was selected
     baud = int(serialRateStrings[serialRateStrings.length-1]);
   }
-  println("opening " + Serial.list()[serialListNumber]);
-  serial = new Serial(this, Serial.list()[serialListNumber], baud);
+  if (serialList != null) {
+    serialListNumber = (int)serialddl.getValue();
+    println("opening " + serialList[serialListNumber]);
+    serial = new Serial(this, serialList[serialListNumber], baud);
+  }
 }
 
 void stopSerial() {
@@ -52,11 +58,11 @@ void SerialSendToUDP() {
   //copy the buffer over
   for (Byte b : serialBuffer) {
     byte bb = buffer[ctr++] = b.byteValue();
-    
+
     // DEBUG
     //print((char)val);
   }
- 
+
   // DEBUG
   //println("::serial sent:" + (ctr-dataCount));
   //send it off
