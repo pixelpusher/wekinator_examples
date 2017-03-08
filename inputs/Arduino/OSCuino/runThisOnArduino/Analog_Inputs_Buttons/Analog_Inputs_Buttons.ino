@@ -14,7 +14,7 @@
  * Make an OSC message and send it over serial
  */
 
-#define ANALOG_INPUT_COUNT 2
+#define ANALOG_INPUT_COUNT 6
 #define UPDATE_INTERVAL_MSEC 40
 
 #ifdef BOARD_HAS_USB_SERIAL
