@@ -12,10 +12,11 @@
 
 /*
  * Make an OSC message and send it over serial
+ * TODO: add reverse (receive message and do something)
  */
 
 #define ANALOG_INPUT_COUNT 2
-#define UPDATE_INTERVAL_MSEC 40
+#define UPDATE_INTERVAL_MSEC 10
 
 #ifdef BOARD_HAS_USB_SERIAL
 
