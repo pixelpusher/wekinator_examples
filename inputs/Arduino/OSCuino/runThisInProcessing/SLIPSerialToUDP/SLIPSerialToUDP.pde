@@ -1,4 +1,4 @@
-import processing.serial.*;
+import processing.serial.*; //<>// //<>// //<>//
 //download at http://ubaa.net/shared/processing/udp/
 import hypermedia.net.*;
 //download at www.sojamo.de/libraries/controlp5
@@ -30,22 +30,22 @@ void setupGUI() {
   //start button
   startButton = cp5.addButton("START")
     .setPosition(200, 200)
-      .setSize(200, 19)
-        ;
+    .setSize(200, 19)
+    ;
 
   //stop button
   stopButton = cp5.addButton("STOP")
     .setPosition(200, 200)
-      .setSize(200, 19)
-        ;
+    .setSize(200, 19)
+    ;
   stopButton.hide();
 
   //Serial Port selector
   // serialddl = cp5.addDropdownList("SerialPort")
   serialddl = cp5.addScrollableList("SerialPort")
     .setPosition(50, 100)
-      .setSize(200, 200)
-        ;
+    .setSize(200, 200)
+    ;
   serialddl.setItemHeight(20);
   serialddl.setBarHeight(15);
   serialddl.getCaptionLabel().set("SELECT ARDUINO SERIAL PORT");
@@ -54,18 +54,18 @@ void setupGUI() {
   serialddl.getValueLabel().getStyle().marginTop = 3;
   //set the serial options
   String SerialList[] = Serial.list(); 
-  for (int i=0;i<SerialList.length;i++) {
+  for (int i=0; i<SerialList.length; i++) {
     String portName = SerialList[i];
     serialddl.addItem(portName, i);
   }
-  serialddl.setValue(2);
+  serialddl.setValue(0);
 
   //setup the baud list
   // baudddl = cp5.addDropdownList("BaudRate")
   baudddl = cp5.addScrollableList("BaudRate")
     .setPosition(50, 50)
-      .setSize(200, 200)
-        ;
+    .setSize(200, 200)
+    ;
   baudddl.setItemHeight(20);
   baudddl.setBarHeight(15);
   baudddl.getCaptionLabel().set("SELECT THE BAUD RATE");
@@ -73,7 +73,7 @@ void setupGUI() {
   baudddl.getCaptionLabel().getStyle().marginLeft = 3;
   baudddl.getValueLabel().getStyle().marginTop = 3;
   //the baud options
-  for (int i=0;i<serialRateStrings.length;i++) {
+  for (int i=0; i<serialRateStrings.length; i++) {
     String baudString = serialRateStrings[i];
     baudddl.addItem(baudString, i);
   }
@@ -82,71 +82,66 @@ void setupGUI() {
   //udp IP/port
   ipAddressField = cp5.addTextfield("IP address")
     .setPosition(300, 30)
-      .setAutoClear(false)
-        .setText(ipAddress)
-          ;
+    .setAutoClear(false)
+    .setText(ipAddress)
+    ;
   incomingPortField = cp5.addTextfield("Incoming Port Number")
     .setPosition(300, 80)
-      .setAutoClear(false)
-        .setText(str(inPort))
-          ;
+    .setAutoClear(false)
+    .setText(str(inPort))
+    ;
 
   outgoingPortField = cp5.addTextfield("Outgoing Port Number")
     .setPosition(300, 130)
-      .setAutoClear(false)
-        .setText(str(outPort))
-          ;
+    .setAutoClear(false)
+    .setText(str(outPort))
+    ;
 
   //text labels
   arduinoLabel = cp5.addTextlabel("arduinoLabel")
     .setText("Serial")
-      .setPosition(50, 10)
-        .setColorValue(0xffffff00)
-          .setFont(createFont("SansSerif", 11))
-            ;
+    .setPosition(50, 10)
+    .setColorValue(0xffffff00)
+    .setFont(createFont("SansSerif", 11))
+    ;
   UDPLabel = cp5.addTextlabel("UDPLabel")
     .setText("UDP")
-      .setPosition(300, 10)
-        .setColorValue(0xffffff00)
-          .setFont(createFont("SansSerif", 11))
-            ;
+    .setPosition(300, 10)
+    .setColorValue(0xffffff00)
+    .setFont(createFont("SansSerif", 11))
+    ;
 
   incomingPacket = cp5.addTextlabel("incomingPacketLabel")
     .setText("Incoming Packet")
-      .setPosition(210, 100)
-        .setColorValue(0xffffff00)
-          .setFont(createFont("SansSerif", 10))
-            ;
+    .setPosition(210, 100)
+    .setColorValue(0xffffff00)
+    .setFont(createFont("SansSerif", 10))
+    ;
   incomingPacket.hide();
 }
 
 void controlEvent(ControlEvent theEvent) {
   String eventName = theEvent.getName();
-  if (theEvent.isGroup()) {
-    if (eventName == "SerialPort") {
-      //set the serial port 
-      serialListNumber = int(theEvent.getValue());
-    } 
-    else if (eventName == "BaudRate") {
-      int index = int(theEvent.getValue());
-      baud = Integer.parseInt(serialRateStrings[index]);
-    } 
-    else {
-    }
+  println("got event: " + eventName);
+
+  if (eventName == "SerialPort") {
+    //set the serial port 
+    serialListNumber = int(theEvent.getValue());
+    println("setting serial port:" + serialListNumber);
+  } else if (eventName == "BaudRate") {
+    int index = int(theEvent.getValue());
+    baud = Integer.parseInt(serialRateStrings[index]);
   } 
-  else if (theEvent.isAssignableFrom(Textfield.class)) {
-    if (eventName == "IP address") {
-      ipAddressField.setFocus(false);
-      ipAddress = theEvent.getStringValue();
-    } 
-    else if (eventName == "Incoming Port Number") {
-      incomingPortField.setFocus(false);
-      inPort = Integer.parseInt(theEvent.getStringValue());
-    } 
-    else if (eventName == "Outgoing Port Number") {
-      outgoingPortField.setFocus(false);
-      outPort = Integer.parseInt(theEvent.getStringValue());
-    }
+
+  if (eventName == "IP address") {
+    ipAddressField.setFocus(false);
+    ipAddress = theEvent.getStringValue();
+  } else if (eventName == "Incoming Port Number") {
+    incomingPortField.setFocus(false);
+    inPort = Integer.parseInt(theEvent.getStringValue());
+  } else if (eventName == "Outgoing Port Number") {
+    outgoingPortField.setFocus(false);
+    outPort = Integer.parseInt(theEvent.getStringValue());
   }
 }
 
@@ -161,8 +156,8 @@ public void START(int theValue) {
 }
 
 //hide all the controls and show the stop button
-void hideControls() { //<>//
-  serialddl.hide(); //<>//
+void hideControls() {
+  serialddl.hide();
   baudddl.hide();
   startButton.hide();
   outgoingPortField.hide();
@@ -204,7 +199,7 @@ String[] serialRateStrings = {
   "19200", "28800", "38400", "57600", "115200"
 };
 int baud = 115200;
-int serialListNumber = 2;
+int serialListNumber = 0; // set by dropdown
 
 ArrayList<Byte> serialBuffer = new ArrayList<Byte>();
 
@@ -217,10 +212,10 @@ void stopSerial() {
   serial.stop();
 }
 
-void serialEvent(Serial serial) {  //<>//
+void serialEvent(Serial serial) { 
   //decode the message
   while (serial.available () > 0) {
-    slipDecode(byte(serial.read())); 
+    slipDecode(byte(serial.read()));
   }
 }
 
@@ -240,11 +235,13 @@ void SerialSendToUDP() {
 
 void serialSend(byte[] data) {
   //encode the message and send it
-  for (int i = 0; i < data.length; i++){
-     slipEncode(data[i]);
+  for (byte d : data) {
+    slipEncode(d);
+    print(char(d));
   }
   //write the eot
   serial.write(eot);
+  println();
 }
 
 /************************************************************************************
@@ -266,33 +263,30 @@ void slipDecode(byte incoming) {
     //if this one is the esc eot
     if (incoming==slipescend) { 
       serialBuffer.add(eot);
-    } 
-    else if (incoming==slipescesc) {
+    } else if (incoming==slipescesc) {
       serialBuffer.add(slipesc);
     }
-  } 
-  else if (incoming==eot) {
+  } else if (incoming==eot) {
     //if it's the eot
     //send off the packet
     if (previous != eot) {
       SerialSendToUDP();
     }
-  } 
-  else if (incoming != slipesc) {
+  } else if (incoming != slipesc) {
     serialBuffer.add(incoming);
   }
 }
 
 void slipEncode(byte incoming) {
-  if(incoming == eot){ 
+  if (incoming == eot) { 
     serial.write(slipesc);
-    serial.write(slipescend); 
-  } else if(incoming==slipesc) {  
+    serial.write(slipescend);
+  } else if (incoming==slipesc) {  
     serial.write(slipesc);
-    serial.write(slipescesc); 
+    serial.write(slipescesc);
   } else {
     serial.write(incoming);
-  }  
+  }
 }
 
 
@@ -308,6 +302,10 @@ int outPort = 6448;
 String ipAddress = "127.0.0.1";
 
 void setupUDP() {
+  ipAddress = ipAddressField.getStringValue();
+  inPort  = Integer.parseInt(incomingPortField.getText());
+  outPort = Integer.parseInt(outgoingPortField.getText());
+
   udp = new UDP( this, inPort );
   // udp.log( true );     // <-- printout the connection activity
   udp.listen( true );
@@ -315,7 +313,6 @@ void setupUDP() {
 
 void stopUDP() {
   udp.close();
-
 }
 
 void UDPSendBuffer(byte[] data) {
@@ -325,7 +322,6 @@ void UDPSendBuffer(byte[] data) {
 //called when UDP recieves some data
 void receive( byte[] data) {
   drawIncomingUDP();
-  //send it over to serial
   serialSend(data);
 }
 

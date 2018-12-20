@@ -5,7 +5,7 @@
 */
 
 #define ANALOG_INPUT_COUNT 2
-#define UPDATE_INTERVAL_MSEC 100
+#define UPDATE_INTERVAL_MSEC 20
 
 #ifdef BOARD_HAS_USB_SERIAL
 
@@ -20,8 +20,6 @@ SLIPEncodedSerial SLIPSerial(Serial1);
 #endif
 
 uint32_t next_time;
-
-uint32_t counter = 0;
 
 void setup()
 {
@@ -40,21 +38,19 @@ void loop()
     return;
   next_time += UPDATE_INTERVAL_MSEC;
 
-  counter = (counter + 1) % 10000;
-
-  //if (digitalRead(8) == LOW)
-  //{
+  if (digitalRead(8) == LOW)
+  {
     // the message wants an OSC address as first argument
-    OSCMessage msg("/CubeX");
+    OSCMessage msg("/wek/inputs");
 
     // add all the analog inputs
     //for (int i = 0; i < ANALOG_INPUT_COUNT; i++)
     //    msg.add((float)analogRead(i));
-    msg.add((float)counter/100);
+    msg.add(1);
 
     SLIPSerial.beginPacket();
     msg.send(SLIPSerial);       // send the bytes to the SLIP stream
     SLIPSerial.endPacket();     // mark the end of the OSC Packet
     msg.empty();                // free space occupied by message
-  //}
+  }
 }
