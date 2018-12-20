@@ -1,3 +1,13 @@
+#include <OSCBoards copy.h>
+#include <OSCBoards.h>
+#include <OSCBundle.h>
+#include <OSCData.h>
+#include <OSCMatch.h>
+#include <OSCMessage.h>
+#include <OSCTiming.h>
+#include <SLIPEncodedSerial.h>
+#include <SLIPEncodedUSBSerial.h>
+
 #include <OSCMessage.h>
 
 /*
@@ -15,7 +25,7 @@ SLIPEncodedUSBSerial SLIPSerial( thisBoardsSerialUSB );
 #else
 
 #include <SLIPEncodedSerial.h>
-SLIPEncodedSerial SLIPSerial(Serial1);
+SLIPEncodedSerial SLIPSerial(Serial);
 
 #endif
 
@@ -48,9 +58,8 @@ void loop()
     OSCMessage msg("/CubeX");
 
     // add all the analog inputs
-    //for (int i = 0; i < ANALOG_INPUT_COUNT; i++)
-    //    msg.add((float)analogRead(i));
-    msg.add((float)counter/100);
+    for (int i = 0; i < ANALOG_INPUT_COUNT; i++)
+        msg.add(((float)analogRead(i))/1023.0f); // scale between 0 and 1
 
     SLIPSerial.beginPacket();
     msg.send(SLIPSerial);       // send the bytes to the SLIP stream
